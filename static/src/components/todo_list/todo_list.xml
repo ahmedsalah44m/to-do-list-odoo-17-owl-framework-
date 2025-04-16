@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<template >
+    <t t-name="owl_dev.owl_template_view">
+        <div class="to-do-container mx-3" >
+
+           <div class="row mt-3">
+               <div class="col-sm-5 mb-2">
+                   <button class="btn btn-primary" t-on-click="addTask" data-bs-toggle="modal" data-bs-target="#exampleModal">New</button>
+               </div>
+               <div class="col-sm-7 mb-2">
+                   <div class="input-group">
+                       <input type="text" placeholder="search here..." t-on-keyup="()=>this.searchTask()"  t-ref="search-value" class="form-control p-2"/>
+                       <button class="btn btn-outline-primary" t-on-click="()=>this.searchTask()"
+                       >search</button>
+                   </div>
+               </div>
+           </div>
+
+            <div class="row mt-3">
+                <div class="col">
+                    <table class="table table-hover  table-striped border">
+                        <thead>
+                            <tr class="table-primary">
+                                <th scope="col">name</th>
+                                <th scope="col">color</th>
+                                <th scope="col">competed</th>
+                            </tr>
+                        </thead>
+                        <tbody t-foreach="state.taskList" t-as="task" t-key="task.id">
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input id="task" class="form-check-input" t-on-click="(e)=> this.treeChangeChecked(e,task)" t-att-checked="task.completed" type="checkbox" />
+                                        <label for="task" t-attf-class="#{ task.completed ?' text-decoration-line-through': '' }" class="form-check-label" ><span  t-esc="task.name"/></label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input class="form-control form-control-color" type="color" t-att-value="task.color" t-on-change="(e)=> this.treeChangeColor(e,task)" title="pick color"/>
+                                </td>
+                                <td>
+                                    <button class="btn btn-success me-2" t-on-click="()=> this.editTask(task)" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button>
+                                    <button class="btn btn-danger me-2" t-on-click="()=> this.deleteTask(task)">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+<!--        modal    -->
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <label id="name" class="col-form-label fw-bold">name</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <input type="text" for="name" class="form-control" t-model="state.task.name" t-att-value="state.task.name"/>
+                    </div>
+                </div>
+
+                  <div class="row mt-3">
+                    <div class="col-sm-2">
+                        <label class="col-form-label fw-bold" id="color">color</label>
+                    </div>
+                      <div class="col-sm-6">
+                          <input type="color" class="form-control-color colorpicker" id="color" t-model="state.task.color" r-att-value="state.task.color"/>
+                    </div>
+                  </div>
+
+                  <div class="row mt-3">
+                      <div class="col-sm-2">
+                          <label id="completed" class="form-check-label fw-bold">completed</label>
+                      </div>
+                      <div class="col-sm-6">
+                          <input id="completed" type="checkbox" class="form-check-input" t-model="state.task.completed" t-att-checked="state.task.completed"/>
+                      </div>
+                  </div>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" t-on-click="saveTask">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+<!--        modal    -->
+
+
+
+        </div>
+    </t>
+</template>
